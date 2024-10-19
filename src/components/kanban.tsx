@@ -111,7 +111,7 @@ function Kanban() {
 						<button
 							onClick={() => onAddTask(TaskStatus.INPROGRESS)}
 							className='flex items-center justify-center rounded-full w-7 h-7'
-							style={{ background: '#F4F2FF' }}
+							style={{ background: '#EFFAFB' }}
 						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
@@ -144,7 +144,7 @@ function Kanban() {
 						<button
 							onClick={() => onAddTask(TaskStatus.DONE)}
 							className='flex items-center justify-center rounded-full w-7 h-7'
-							style={{ background: '#F4F2FF' }}
+							style={{ background: '#F1FBEC' }}
 						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'

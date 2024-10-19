@@ -1,3 +1,4 @@
+import Kanban from '@/components/kanban';
 import { useAuth } from '@/context/AuthContext';
 import withAuth from '@/hoc/withAuth';
 
@@ -15,7 +16,9 @@ function Home() {
 					Logout
 				</button>
 			</header>
-			<div>Home page</div>
+			<div>
+				<Kanban />
+			</div>
 		</>
 	);
 }

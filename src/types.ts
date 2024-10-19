@@ -24,3 +24,24 @@ export interface LoginResponse extends ApiResponse {
 export interface ApiErrorResponse extends ApiResponse {
 	data: null;
 }
+
+export enum TaskStatus {
+	PENDING = 'PENDING',
+	INPROGRESS = 'INPROGRESS',
+	DONE = 'DONE',
+}
+
+export enum TaskPriority {
+	LOW = 'LOW',
+	MEDIUM = 'MEDIUM',
+	HIGH = 'HIGH',
+}
+
+export interface Task {
+	_id: string;
+	title: string;
+	description: string;
+	priority: TaskPriority;
+	status: TaskStatus;
+	dueDate: Date;
+}

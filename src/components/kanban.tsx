@@ -1,68 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TaskDialog from './TaskDialog';
-import { Task, TaskPriority, TaskStatus } from '@/types';
+import { Task, TaskStatus } from '@/types';
 import TaskCard from './TaskCard';
-
-const tasks: Task[] = [
-	{
-		_id: '1',
-		title: 'Customer Journey Mapping',
-		description: 'Mapping the customer journey for Kidszone.',
-		priority: TaskPriority.MEDIUM,
-		dueDate: new Date(),
-		status: TaskStatus.PENDING,
-	},
-	{
-		_id: '2',
-		title: 'UI Component Modification',
-		description: 'Micro interactions, Loading and Progress.',
-		priority: TaskPriority.MEDIUM,
-		dueDate: new Date(),
-		status: TaskStatus.PENDING,
-	},
-	{
-		_id: '3',
-		title: 'Database Customization',
-		description: "Customizing Uber's database for internal system.",
-		priority: TaskPriority.MEDIUM,
-		dueDate: new Date(),
-		status: TaskStatus.INPROGRESS,
-	},
-	{
-		_id: '4',
-		title: 'Fix Interior Planning',
-		description: 'Fix layout and 3D modeling for Hotel Nice.',
-		priority: TaskPriority.LOW,
-		dueDate: new Date(),
-		status: TaskStatus.INPROGRESS,
-	},
-	{
-		_id: '5',
-		title: 'Redesign WordPress Website',
-		description: 'Redesign the website for better usability.',
-		priority: TaskPriority.HIGH,
-		dueDate: new Date(),
-		status: TaskStatus.DONE,
-	},
-	{
-		_id: '6',
-		title: 'Facebook Ads Campaign',
-		description: 'Managing Facebook Ads campaign for Plantify.',
-		priority: TaskPriority.MEDIUM,
-		dueDate: new Date(),
-		status: TaskStatus.DONE,
-	},
-];
+import { useApiClient } from '@/hooks/api';
 
 function Kanban() {
+	const { apiCall } = useApiClient();
 	const [open, setOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [data, setData] = useState<Task[]>([]);
 	const [addingTaskStatus, setAddingTaskStatus] = useState<TaskStatus>(
 		TaskStatus.PENDING
 	);
 
+	const fetchData = async () => {
+		try {
+			setIsLoading(true);
+
+			const result = await apiCall(`task`, 'GET');
+
+			setData(result.data as []);
+		} catch (err) {
+			console.log(err);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []);
+
 	function onAddTask(taskStatus: TaskStatus) {
 		setAddingTaskStatus(taskStatus);
 		setOpen(true);
+	}
+
+	if (isLoading) {
+		return <div>Loading...</div>;
 	}
 
 	return (
@@ -95,10 +70,10 @@ function Kanban() {
 							</svg>
 						</button>
 					</div>
-					{tasks
+					{data
 						.filter((tsk) => tsk.status === TaskStatus.PENDING)
-						.map((task, idx) => (
-							<TaskCard key={idx} {...task} />
+						.map((task) => (
+							<TaskCard key={task._id} {...task} />
 						))}
 				</div>
 
@@ -128,10 +103,10 @@ function Kanban() {
 							</svg>
 						</button>
 					</div>
-					{tasks
+					{data
 						.filter((tsk) => tsk.status === TaskStatus.INPROGRESS)
-						.map((task, idx) => (
-							<TaskCard key={idx} {...task} />
+						.map((task) => (
+							<TaskCard key={task._id} {...task} />
 						))}
 				</div>
 
@@ -161,10 +136,10 @@ function Kanban() {
 							</svg>
 						</button>
 					</div>
-					{tasks
+					{data
 						.filter((tsk) => tsk.status === TaskStatus.DONE)
-						.map((task, idx) => (
-							<TaskCard key={idx} {...task} />
+						.map((task) => (
+							<TaskCard key={task._id} {...task} />
 						))}
 				</div>
 			</div>

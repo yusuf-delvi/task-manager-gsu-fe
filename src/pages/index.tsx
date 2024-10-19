@@ -1,4 +1,4 @@
-import withAuth from '@/hooks/withAuth';
+import withAuth from '@/hoc/withAuth';
 
 function Home() {
 	return <div>Home page</div>;

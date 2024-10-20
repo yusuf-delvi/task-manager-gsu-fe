@@ -8,7 +8,7 @@ export interface User {
 export interface ApiResponse {
 	statusCode: string;
 	message: string;
-	data: null | object;
+	data: null | object | [];
 }
 
 export interface LoginResponse extends ApiResponse {
@@ -44,4 +44,13 @@ export interface Task {
 	priority: TaskPriority;
 	status: TaskStatus;
 	dueDate: Date;
+}
+
+export interface TaskColumn {
+	id: string;
+	tasks: Task[];
+}
+
+export interface TaskColumns {
+	[key: string]: TaskColumn;
 }

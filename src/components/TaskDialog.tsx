@@ -6,11 +6,20 @@ import { FormEvent } from 'react';
 interface Props {
 	open: boolean;
 	taskStatus: TaskStatus;
+	task?: Task;
+	isUpdate?: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleAddTask: (task: Task) => void;
 }
 
-function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
+function AddTaskDialog({
+	open,
+	setOpen,
+	taskStatus,
+	handleAddTask,
+	task,
+	isUpdate = false,
+}: Props) {
 	const { apiCall } = useApiClient();
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -23,18 +32,33 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 		const priority = formData.get('priority');
 
 		try {
-			const createdRes = await apiCall(`task`, 'POST', {
-				title,
-				description,
-				dueDate,
-				priority,
-				status: taskStatus,
-			});
+			if (isUpdate) {
+				const updatedTask = await apiCall(`task`, 'PUT', {
+					_id: task?._id,
+					title,
+					description,
+					dueDate,
+					priority,
+				});
 
-			if (!createdRes) throw new Error('Unable to create task');
+				if (!updatedTask) throw new Error('Unable to create task');
 
-			handleAddTask(createdRes.data as Task);
-			setOpen(false);
+				handleAddTask(updatedTask.data as Task);
+				setOpen(false);
+			} else {
+				const createdRes = await apiCall(`task`, 'POST', {
+					title,
+					description,
+					dueDate,
+					priority,
+					status: taskStatus,
+				});
+
+				if (!createdRes) throw new Error('Unable to create task');
+
+				handleAddTask(createdRes.data as Task);
+				setOpen(false);
+			}
 		} catch (error) {
 			console.error(error);
 			setOpen(false);
@@ -43,13 +67,6 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 
 	async function handleReset(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-
-		const formData = new FormData(event.currentTarget);
-		formData.set('title', '');
-		formData.set('description', '');
-		formData.set('dueDate', '');
-		formData.set('priority', 'LOW');
-
 		setOpen(false);
 	}
 
@@ -70,10 +87,6 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 							<div className='mt-3 text-center sm:mt-0 sm:text-left'>
 								<form onSubmit={handleSubmit} onReset={handleReset}>
 									<div className=''>
-										<h2 className='text-base font-semibold leading-7 text-gray-900'>
-											Create Task
-										</h2>
-
 										<div className='grid grid-cols-1 gap-x-3 gap-y-2 sm:grid-cols-6'>
 											<div className='sm:col-span-6'>
 												<div className='mt-2'>
@@ -83,6 +96,7 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 														type='text'
 														title='Task name'
 														placeholder='Name'
+														defaultValue={task?.title || ''}
 														required
 														className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
 													/>
@@ -95,6 +109,7 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 														id='priority'
 														name='priority'
 														title='Priority'
+														defaultValue={task?.priority || ''}
 														required
 														className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6'
 													>
@@ -112,6 +127,13 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 														name='dueDate'
 														type='date'
 														title='Due Date'
+														defaultValue={
+															task
+																? new Date(task.dueDate)
+																		.toISOString()
+																		.split('T')[0]
+																: undefined
+														}
 														required
 														className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
 													/>
@@ -127,7 +149,7 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 														rows={2}
 														placeholder='Description'
 														className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-														defaultValue={''}
+														defaultValue={task?.description || ''}
 													/>
 												</div>
 											</div>
@@ -145,7 +167,7 @@ function AddTaskDialog({ open, setOpen, taskStatus, handleAddTask }: Props) {
 											type='submit'
 											className='rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
 										>
-											Create
+											{isUpdate ? 'Update' : 'Add'}
 										</button>
 									</div>
 								</form>

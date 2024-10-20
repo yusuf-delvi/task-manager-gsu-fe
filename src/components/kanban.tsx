@@ -13,6 +13,10 @@ function Kanban() {
 		TaskStatus.PENDING
 	);
 
+	function handleAddTask(task: Task) {
+		setData([task, ...data]);
+	}
+
 	const fetchData = async () => {
 		try {
 			setIsLoading(true);
@@ -42,7 +46,12 @@ function Kanban() {
 
 	return (
 		<div className='container mt-5 mx-auto p-4'>
-			<TaskDialog open={open} setOpen={setOpen} taskStatus={addingTaskStatus} />
+			<TaskDialog
+				open={open}
+				setOpen={setOpen}
+				taskStatus={addingTaskStatus}
+				handleAddTask={handleAddTask}
+			/>
 			<div className='grid grid-cols-3 gap-4'>
 				<div>
 					<div

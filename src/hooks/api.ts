@@ -25,7 +25,8 @@ export const useApiClient = () => {
 		async (
 			endpoint: string,
 			method: HttpMethod = 'GET',
-			data = null
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			data: any = null
 		): Promise<ApiResponse> => {
 			try {
 				const headers = await getHeaders();

@@ -52,104 +52,106 @@ function Kanban() {
 				taskStatus={addingTaskStatus}
 				handleAddTask={handleAddTask}
 			/>
-			<div className='grid grid-cols-3 gap-4'>
-				<div>
-					<div
-						className='flex justify-between mb-4 px-6 py-3 rounded-lg'
-						style={{ background: '#EBE5FF' }}
-					>
-						<h2 className='text-lg font-semibold'>To - Do</h2>
-						<button
-							onClick={() => onAddTask(TaskStatus.PENDING)}
-							className='flex items-center justify-center rounded-full w-7 h-7'
-							style={{ background: '#F4F2FF' }}
+			<div className='overflow-x-auto'>
+				<div className='grid grid-flow-col gap-4 md:grid-cols-2 lg:grid-cols-3'>
+					<div className='min-w-[300px]'>
+						<div
+							className='flex justify-between mb-4 px-6 py-3 rounded-lg'
+							style={{ background: '#EBE5FF' }}
 						>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 24 24'
-								stroke='#000'
-								className='w-4 h-4'
-								strokeWidth={2}
+							<h2 className='text-lg font-semibold'>To - Do</h2>
+							<button
+								onClick={() => onAddTask(TaskStatus.PENDING)}
+								className='flex items-center justify-center rounded-full w-7 h-7'
+								style={{ background: '#F4F2FF' }}
 							>
-								<path
-									fillRule='evenodd'
-									d='M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z'
-									clipRule='evenodd'
-								/>
-							</svg>
-						</button>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 24 24'
+									stroke='#000'
+									className='w-4 h-4'
+									strokeWidth={2}
+								>
+									<path
+										fillRule='evenodd'
+										d='M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z'
+										clipRule='evenodd'
+									/>
+								</svg>
+							</button>
+						</div>
+						{data
+							.filter((tsk) => tsk.status === TaskStatus.PENDING)
+							.map((task) => (
+								<TaskCard key={task._id} {...task} />
+							))}
 					</div>
-					{data
-						.filter((tsk) => tsk.status === TaskStatus.PENDING)
-						.map((task) => (
-							<TaskCard key={task._id} {...task} />
-						))}
-				</div>
 
-				<div>
-					<div
-						className='flex justify-between mb-4 px-6 py-3 rounded-lg'
-						style={{ background: '#DFF4F9' }}
-					>
-						<h2 className='text-lg font-semibold'>In Progress</h2>
-						<button
-							onClick={() => onAddTask(TaskStatus.INPROGRESS)}
-							className='flex items-center justify-center rounded-full w-7 h-7'
-							style={{ background: '#EFFAFB' }}
+					<div className='min-w-[300px]'>
+						<div
+							className='flex justify-between mb-4 px-6 py-3 rounded-lg'
+							style={{ background: '#DFF4F9' }}
 						>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 24 24'
-								stroke='#000'
-								className='w-4 h-4'
-								strokeWidth={2}
+							<h2 className='text-lg font-semibold'>In Progress</h2>
+							<button
+								onClick={() => onAddTask(TaskStatus.INPROGRESS)}
+								className='flex items-center justify-center rounded-full w-7 h-7'
+								style={{ background: '#EFFAFB' }}
 							>
-								<path
-									fillRule='evenodd'
-									d='M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z'
-									clipRule='evenodd'
-								/>
-							</svg>
-						</button>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 24 24'
+									stroke='#000'
+									className='w-4 h-4'
+									strokeWidth={2}
+								>
+									<path
+										fillRule='evenodd'
+										d='M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z'
+										clipRule='evenodd'
+									/>
+								</svg>
+							</button>
+						</div>
+						{data
+							.filter((tsk) => tsk.status === TaskStatus.INPROGRESS)
+							.map((task) => (
+								<TaskCard key={task._id} {...task} />
+							))}
 					</div>
-					{data
-						.filter((tsk) => tsk.status === TaskStatus.INPROGRESS)
-						.map((task) => (
-							<TaskCard key={task._id} {...task} />
-						))}
-				</div>
 
-				<div>
-					<div
-						className='flex justify-between mb-4 px-6 py-3 rounded-lg'
-						style={{ background: '#E3F6D9' }}
-					>
-						<h2 className='text-lg font-semibold'>Done</h2>
-						<button
-							onClick={() => onAddTask(TaskStatus.DONE)}
-							className='flex items-center justify-center rounded-full w-7 h-7'
-							style={{ background: '#F1FBEC' }}
+					<div className='min-w-[300px]'>
+						<div
+							className='flex justify-between mb-4 px-6 py-3 rounded-lg'
+							style={{ background: '#E3F6D9' }}
 						>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 24 24'
-								stroke='#000'
-								className='w-4 h-4'
-								strokeWidth={2}
+							<h2 className='text-lg font-semibold'>Done</h2>
+							<button
+								onClick={() => onAddTask(TaskStatus.DONE)}
+								className='flex items-center justify-center rounded-full w-7 h-7'
+								style={{ background: '#F1FBEC' }}
 							>
-								<path
-									fillRule='evenodd'
-									d='M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z'
-									clipRule='evenodd'
-								/>
-							</svg>
-						</button>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 24 24'
+									stroke='#000'
+									className='w-4 h-4'
+									strokeWidth={2}
+								>
+									<path
+										fillRule='evenodd'
+										d='M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z'
+										clipRule='evenodd'
+									/>
+								</svg>
+							</button>
+						</div>
+						{data
+							.filter((tsk) => tsk.status === TaskStatus.DONE)
+							.map((task) => (
+								<TaskCard key={task._id} {...task} />
+							))}
 					</div>
-					{data
-						.filter((tsk) => tsk.status === TaskStatus.DONE)
-						.map((task) => (
-							<TaskCard key={task._id} {...task} />
-						))}
 				</div>
 			</div>
 		</div>

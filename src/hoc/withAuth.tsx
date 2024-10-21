@@ -12,6 +12,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
 			if (!loading && user === null) {
 				router.replace('/login');
 			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [loading, user]);
 
 		if (loading || user === null) {

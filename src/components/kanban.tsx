@@ -69,9 +69,11 @@ function Kanban() {
 				},
 			};
 
-			result.data?.forEach((task: Task) => {
-				tasksData[task.status].tasks.push(task);
-			});
+			if (Array.isArray(result.data)) {
+				result.data?.forEach((task: Task) => {
+					tasksData[task.status].tasks.push(task);
+				});
+			}
 
 			setTasks(tasksData);
 		} catch (err) {
@@ -83,6 +85,7 @@ function Kanban() {
 
 	useEffect(() => {
 		fetchData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	function onAddTask(taskStatus: TaskStatus) {
@@ -106,8 +109,6 @@ function Kanban() {
 		if (tasks[unique]) {
 			return tasks[unique] ?? null;
 		}
-
-		const id = String(unique);
 
 		let columnId: string | null = null;
 

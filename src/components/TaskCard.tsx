@@ -32,7 +32,7 @@ const TaskCard: React.FC<Task> = (propTask) => {
 			>
 				<div
 					className='bg-white shadow-md rounded-lg p-4 mb-4 lg:cursor-move sm:cursor-pointer'
-					onClick={() => {
+					onMouseDown={() => {
 						setOpen(true);
 					}}
 				>

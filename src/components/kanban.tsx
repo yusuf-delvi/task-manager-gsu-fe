@@ -21,7 +21,20 @@ function Kanban() {
 	const { apiCall } = useApiClient();
 	const [open, setOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const [tasks, setTasks] = useState<TaskColumns>({});
+	const [tasks, setTasks] = useState<TaskColumns>({
+		[TaskStatus.PENDING]: {
+			id: TaskStatus.PENDING,
+			tasks: [],
+		},
+		[TaskStatus.INPROGRESS]: {
+			id: TaskStatus.INPROGRESS,
+			tasks: [],
+		},
+		[TaskStatus.DONE]: {
+			id: TaskStatus.DONE,
+			tasks: [],
+		},
+	});
 	const [addingTaskStatus, setAddingTaskStatus] = useState<TaskStatus>(
 		TaskStatus.PENDING
 	);

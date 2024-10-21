@@ -29,13 +29,11 @@ const TaskCard: React.FC<Task> = (propTask) => {
 				{...attributes}
 				{...listeners}
 				style={{ transform: CSS.Transform.toString(transform) }}
+				onClick={() => {
+					setOpen(true);
+				}}
 			>
-				<div
-					className='bg-white shadow-md rounded-lg p-4 mb-4 lg:cursor-move sm:cursor-pointer'
-					onMouseDown={() => {
-						setOpen(true);
-					}}
-				>
+				<div className='bg-white shadow-md rounded-lg p-4 mb-4 lg:cursor-move sm:cursor-pointer'>
 					<h3 className='font-semibold text-lg'>{task.title}</h3>
 					<p className='text-gray-700 mb-2'>{task.description}</p>
 					<div className='flex items-center justify-between mb-2'>

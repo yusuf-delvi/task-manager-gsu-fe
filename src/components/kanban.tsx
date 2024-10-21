@@ -47,7 +47,11 @@ function Kanban() {
 	const { setNodeRef: setNodeRefDone } = useDroppable({ id: TaskStatus.DONE });
 
 	const sensors = useSensors(
-		useSensor(PointerSensor),
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 5,
+			},
+		}),
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		})
